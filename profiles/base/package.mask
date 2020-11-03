@@ -1,0 +1,7 @@
+sys-kernel/chromeos-kernel-5_4::chromiumos
+sys-kernel/chromeos-kernel-5_4::patches
+sys-kernel/linux-firmware::patches
+media-libs/minigbm::patches
+chromeos-base/cros-disks::chromiumos
+chromeos-base/vm_host_tools::chromiumos
+chromeos-base/vm_host_tools::patches

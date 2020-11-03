@@ -1,0 +1,6 @@
+sys-kernel/rockchip-kernel -clang -lld -arm boot_dts_device_tree
+net-wireless/bluez bt_deprecated_tools
+chromeos-base/chromeos-chrome chrome_media
+sys-apps/gptfdisk -ncurses
+sys-kernel/chromeos-kernel-5_4 clang lld arm boot_dts_device_tree
+sys-kernel/chromeos-kernel-4_4 clang lld arm boot_dts_device_tree
