@@ -18,10 +18,18 @@ install_rockpro64_bootloader() {
   local image="$1"
 
   info "Installing uboot firmware on ${image}"
-  sudo dd if="${ROOT}/boot/bootloader.bin" of="$image" \
+  dd if="${ROOT}/boot/idbloader.img" of="$image" \
     conv=notrunc,fsync \
-    bs=512 \
-    seek=64 || die "fail to install uboot fireware"
+    bs=32k \
+    seek=1 || die "fail to install idbloader.img"
+  dd if="${ROOT}/boot/u-boot.img" of="$image" \
+    conv=notrunc,fsync \
+    bs=64k \
+    seek=128 || die "fail to install u-boot.img"
+  dd if="${ROOT}/boot/trust.img" of="$image" \
+    conv=notrunc,fsync \
+    bs=64k \
+    seek=192 || die "fail to install trust.img"
 
   info "Installed bootloader."
 }
