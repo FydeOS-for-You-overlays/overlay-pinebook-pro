@@ -45,7 +45,7 @@ src_install() {
   insinto /lib/udev/rules.d
   doins ${FILESDIR}/camera/50-camera.rules
   doins ${FILESDIR}/udev-rules/*
-  insinto /etc/camera
-  doins ${FILESDIR}/camera/camera_characteristics.conf
+#  insinto /etc/camera
+#  doins ${FILESDIR}/camera/camera_characteristics.conf
 }
 
