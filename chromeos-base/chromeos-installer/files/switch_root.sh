@@ -5,10 +5,8 @@ kernelA=2
 kernelB=4
 rootA=3
 rootB=5
-CMDFILE="cmdline.txt"
-
-. /usr/share/cros/update_kernel_lib.sh
-
+boot_b_file="first-b.txt"
+EFI_NUM=12
 
 get_part_priority() {
   local part_num=$1
@@ -24,7 +22,6 @@ determin_root_num() {
     echo $rootB
   fi
 }
-
 
 help() {
   echo "$0 [root_partition_num] [disk_dev]"
@@ -64,6 +61,17 @@ modify_root() {
   sync $cmdfile
 }
 
+change_boot_to() {
+  local boot_to_part_num=$1
+  local efi_mnt=$2
+  local boot_b="$efi_mnt/${boot_b_file}"
+  if [ $boot_to_part_num == "$rootA" ]; then
+    [ -f $boot_b ] && rm $boot_b
+  else
+    touch $boot_b
+  fi
+}
+
 main() {
  local part_num=$1
  local disk_dev=$2
@@ -71,7 +79,6 @@ main() {
  [ -z "${part_num}" ] && part_num=$(determin_root_num)
  check_var $part_num $disk_dev
  local tmpdir=$(mktemp -d) 
- local root_uuid=$(get_uuid $part_num $disk_dev) 
  local efi_dev=
  if [[ $disk_dev =~ [a-z]$ ]]; then
    efi_dev=${disk_dev}${EFI_NUM}
@@ -85,8 +92,7 @@ main() {
    root_dev=${disk_dev}p${part_num}
  fi
  mount $efi_dev $tmpdir || die "error mounting"
- modify_root ${tmpdir}/${CMDFILE} $root_uuid || die "error when modified cmdline.txt"
- update_root_kernel $root_dev
+ change_boot_to $part_num $tmpdir
  umount $tmpdir
  rmdir $tmpdir
 }

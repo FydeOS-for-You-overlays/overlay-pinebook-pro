@@ -25,7 +25,7 @@ index bd8e095c4..71297e0b5 100755
  main() {
 +  local target_disk=$(get_disk_dev)
 +  local target_part_num=$(get_part_num)
-+  /usr/sbin/switch_root.sh $target_part_num $target_disk
++  ${INSTALL_ROOT}/usr/sbin/switch_root.sh $target_part_num $target_disk
    cd "${INSTALL_ROOT}" || exit 1
  
    trap cleanup EXIT

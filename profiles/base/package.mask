@@ -5,3 +5,5 @@ media-libs/minigbm::patches
 chromeos-base/cros-disks::patches
 chromeos-base/vm_host_tools::chromiumos
 chromeos-base/vm_host_tools::patches
+x11-libs/libdrm::patches
+chromeos-base/cros-disks::chromiumos

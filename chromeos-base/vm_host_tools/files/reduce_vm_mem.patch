@@ -1,8 +1,8 @@
-diff --git a/vm_tools/concierge/vm_util.cc b/vm_tools/concierge/vm_util.cc
-index 6b20ff752..006fe52e8 100644
---- a/vm_tools/concierge/vm_util.cc
-+++ b/vm_tools/concierge/vm_util.cc
-@@ -145,9 +145,9 @@ std::string GetVmMemoryMiB() {
+diff --git a/concierge/vm_util.cc b/concierge/vm_util.cc
+index 8b3376f343..d61f6fe8e6 100644
+--- a/concierge/vm_util.cc
++++ b/concierge/vm_util.cc
+@@ -179,9 +179,9 @@ std::string GetVmMemoryMiB() {
    int64_t sys_memory_mb = base::SysInfo::AmountOfPhysicalMemoryMB();
    int64_t vm_memory_mb;
    if (sys_memory_mb >= 4096) {

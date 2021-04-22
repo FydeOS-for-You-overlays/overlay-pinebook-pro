@@ -5,7 +5,7 @@ EAPI=5
 
 CROS_WORKON_REPO="https://github.com/ayufan-rock64"
 CROS_WORKON_COMMIT="eeab15eccd3efdb64d09ca30ca0225dcf72a28da"
-CROS_WORKON_BLACKLIST="1"
+CROS_WORKON_MANUAL_UPREV="1"
 CROS_WORKON_PROJECT="linux-package"
 
 DEPEND=""

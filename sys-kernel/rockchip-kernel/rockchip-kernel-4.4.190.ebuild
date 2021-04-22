@@ -3,10 +3,10 @@
 
 EAPI=7
 CROS_WORKON_REPO="git@github.com:FydeOS-for-You-overlays"
-CROS_WORKON_COMMIT="681930170e3e1afa6c205ab085d1821abfe6698e"
+CROS_WORKON_COMMIT="815b3a528ee6a3484a34bcb29ff4f1b82c07da31"
 CROS_WORKON_EGIT_BRANCH="fydeos-release-4.4"
 CROS_WORKON_PROJECT="kernel-rockchip"
-CROS_WORKON_LOCALNAME="/kernel/kernel-rockchip"
+CROS_WORKON_LOCALNAME="/kernel/rockchip-kernel"
 CROS_WORKON_INCREMENTAL_BUILD="1"
 
 DEPEND="!sys-kernel/chromeos-kernel-4_4"

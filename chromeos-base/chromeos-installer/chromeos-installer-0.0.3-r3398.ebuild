@@ -77,9 +77,6 @@ src_install() {
 		doexe init/crx-import.sh
     exeinto /usr/sbin
     doexe ${FILESDIR}/switch_root.sh
-    doexe ${FILESDIR}/update_kernel.sh
-    insinto /usr/share/cros
-    doins ${FILESDIR}/update_kernel_lib.sh
 	fi
 }
 
