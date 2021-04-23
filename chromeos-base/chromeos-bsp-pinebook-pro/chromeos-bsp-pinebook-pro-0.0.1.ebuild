@@ -18,6 +18,7 @@ RDEPEND="
   net-misc/rsync
   net-wireless/bluez
   sys-boot/rockchip-uboot
+  chromeos-base/fydeos-power-daemon-go
   chromeos-base/chromeos-bsp-baseboard-gru
   "
 

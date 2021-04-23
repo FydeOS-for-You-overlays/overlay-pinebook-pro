@@ -88,4 +88,5 @@ src_prepare() {
   default
   epatch ${FILESDIR}/postinst.patch
   epatch ${FILESDIR}/chromeos-install.patch
+  epatch ${FILESDIR}/chromeos_postinst.patch
 }
