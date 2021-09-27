@@ -3,6 +3,8 @@
 
 EAPI="5"
 
+CROS_WORKON_COMMIT="29df61f976117885ed932d09e2d0d4f7f5b3ee0c"
+CROS_WORKON_TREE=("17e0c199bc647ae6a33554fd9047fa23ff9bfd7e" "57a27c5ec0beffbeac1e9ec8d0c28001ed99993a" "29a86631c7ecdeff7392d39cc95920cc42bc5cf1" "e7dba8c91c1f3257c34d4a7ffff0ea2537aeb6bb")
 CROS_WORKON_PROJECT="chromiumos/platform2"
 CROS_WORKON_LOCALNAME="platform2"
 CROS_WORKON_INCREMENTAL_BUILD=1
@@ -20,7 +22,7 @@ SRC_URI=""
 
 LICENSE="BSD-Google"
 SLOT="0"
-KEYWORDS="~*"
+KEYWORDS="*"
 IUSE="cros_embedded enable_slow_boot_notify -mtd pam systemd +oobe_config lvm_stateful_partition"
 
 COMMON_DEPEND="
@@ -76,4 +78,13 @@ src_install() {
 	fi
 	exeinto /usr/share/cros/init
 	doexe init/crx-import.sh
+	exeinto /usr/sbin
+	doexe ${FILESDIR}/switch_root.sh
+}
+
+src_prepare() {
+	default
+	epatch ${FILESDIR}/postinst.patch
+	epatch ${FILESDIR}/chromeos-install.patch
+	epatch ${FILESDIR}/chromeos_postinst.patch
 }
