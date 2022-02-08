@@ -32,6 +32,7 @@ RDEPEND="
 	net-fs/sshfs
 	sys-fs/dosfstools
 	sys-fs/exfat-utils
+	sys-fs/fuse-archive
 	sys-fs/fuse-exfat
 	sys-fs/fuse-zip
 	sys-fs/ntfs3g
@@ -50,6 +51,9 @@ pkg_preinst() {
 
 	enewuser "ntfs-3g"
 	enewgroup "ntfs-3g"
+
+	enewuser "fuse-archivemount"
+	enewgroup "fuse-archivemount"
 
 	enewuser "fuse-exfat"
 	enewgroup "fuse-exfat"
@@ -76,6 +80,7 @@ src_install() {
 
 	# Install seccomp policy files.
 	insinto /usr/share/policy
+	use seccomp && newins archivemount-seccomp-${ARCH}.policy archivemount-seccomp.policy
 	use seccomp && newins fuse-zip-seccomp-${ARCH}.policy fuse-zip-seccomp.policy
 	use seccomp && newins rar2fs-seccomp-${ARCH}.policy rar2fs-seccomp.policy
 
@@ -95,12 +100,17 @@ src_install() {
 	insinto /usr/share/cros/startup/process_management_policies
 	doins setuid_restrictions/cros_disks_whitelist.txt
 
+	# Install powerd prefs for FUSE freeze ordering.
+	insinto /usr/share/power_manager
+	doins powerd_prefs/suspend_freezer_deps_*
+
 	local fuzzers=(
 		filesystem_label_fuzzer
 	)
 
 	local fuzzer
 	for fuzzer in "${fuzzers[@]}"; do
+		# fuzzer_component_id is unknown/unlisted
 		platform_fuzzer_install "${S}"/OWNERS "${OUT}/${PN}_${fuzzer}"
 	done
 }

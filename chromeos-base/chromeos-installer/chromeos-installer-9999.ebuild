@@ -21,7 +21,7 @@ SRC_URI=""
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="~*"
-IUSE="cros_embedded enable_slow_boot_notify -mtd pam systemd +oobe_config lvm_stateful_partition"
+IUSE="cros_embedded enable_slow_boot_notify -mtd pam systemd lvm_stateful_partition"
 
 COMMON_DEPEND="
 	chromeos-base/libbrillo:=
@@ -37,7 +37,6 @@ RDEPEND="${COMMON_DEPEND}
 	pam? ( app-admin/sudo )
 	chromeos-base/chromeos-common-script
 	!cros_embedded? ( chromeos-base/chromeos-storage-info )
-	oobe_config? ( chromeos-base/oobe_config )
 	dev-libs/openssl:0=
 	dev-util/shflags
 	sys-apps/rootdev
@@ -50,7 +49,7 @@ platform_pkg_test() {
 }
 
 src_install() {
-	dobin "${OUT}"/{cros_installer,cros_oobe_crypto}
+	dobin "${OUT}"/cros_installer
 	if use mtd ; then
 		dobin "${OUT}"/nand_partition
 	fi

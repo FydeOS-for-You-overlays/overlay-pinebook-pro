@@ -3,8 +3,8 @@
 
 EAPI="5"
 
-CROS_WORKON_COMMIT="0f4f2e09dc2ab3255685c3005d3f60081f3a2a09"
-CROS_WORKON_TREE=("52a8a8b6d3bbca5e90d4761aa308a5541d52b1bb" "04eb33e4a1a28c4e52176cad04e7d44c0fc80b33" "2b6d4230c92e83e39209823855064483eed04754" "e7dba8c91c1f3257c34d4a7ffff0ea2537aeb6bb")
+CROS_WORKON_COMMIT="54c7fac37782fd4a975d5ac8982da4ef9423fda7"
+CROS_WORKON_TREE=("d897a7a44e07236268904e1df7f983871c1e1258" "1142ef9f2e5e65b8b6ab2efeae2b4dc29d24312e" "76048c384ed9eba7cdd5dc5c3e0b853baac8802d" "e7dba8c91c1f3257c34d4a7ffff0ea2537aeb6bb")
 CROS_WORKON_PROJECT="chromiumos/platform2"
 CROS_WORKON_LOCALNAME="platform2"
 CROS_WORKON_INCREMENTAL_BUILD=1
@@ -23,17 +23,15 @@ SRC_URI=""
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="*"
-IUSE="cros_embedded enable_slow_boot_notify -mtd pam systemd +oobe_config lvm_stateful_partition"
+IUSE="cros_embedded enable_slow_boot_notify -mtd pam systemd lvm_stateful_partition"
 
 COMMON_DEPEND="
 	chromeos-base/libbrillo:=
 	chromeos-base/vboot_reference
-	x11-libs/libxkbcommon:=
-	x11-misc/xkeyboard-config:=
+	chromeos-base/verity
 "
 
 DEPEND="${COMMON_DEPEND}
-	chromeos-base/verity
 	dev-libs/openssl:0=
 "
 
@@ -41,7 +39,6 @@ RDEPEND="${COMMON_DEPEND}
 	pam? ( app-admin/sudo )
 	chromeos-base/chromeos-common-script
 	!cros_embedded? ( chromeos-base/chromeos-storage-info )
-	oobe_config? ( chromeos-base/oobe_config )
 	dev-libs/openssl:0=
 	dev-util/shflags
 	sys-apps/rootdev
@@ -54,11 +51,11 @@ platform_pkg_test() {
 }
 
 src_install() {
-	dobin "${OUT}"/{cros_installer,cros_oobe_crypto}
+	dobin "${OUT}"/cros_installer
 	if use mtd ; then
 		dobin "${OUT}"/nand_partition
 	fi
-	dosbin chromeos-* encrypted_import "${OUT}"/{evwaitkey,key_reader}
+	dosbin chromeos-* encrypted_import "${OUT}"/evwaitkey
 	dosym usr/sbin/chromeos-postinst /postinst
 
 	# Enable lvm stateful partition.
@@ -80,13 +77,13 @@ src_install() {
 	fi
 	exeinto /usr/share/cros/init
 	doexe init/crx-import.sh
-  exeinto /usr/sbin
-  doexe ${FILESDIR}/switch_root.sh
+	exeinto /usr/sbin
+	doexe ${FILESDIR}/switch_root.sh
 }
 
 src_prepare() {
-  default
-  epatch ${FILESDIR}/postinst.patch
-  epatch ${FILESDIR}/chromeos-install.patch
-  epatch ${FILESDIR}/chromeos_postinst.patch
+	default
+	epatch ${FILESDIR}/postinst.patch
+	epatch ${FILESDIR}/chromeos-install.patch
+	epatch ${FILESDIR}/chromeos_postinst.patch
 }

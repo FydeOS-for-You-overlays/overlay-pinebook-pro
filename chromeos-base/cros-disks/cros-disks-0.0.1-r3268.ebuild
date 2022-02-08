@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-CROS_WORKON_COMMIT="b0673d8ae00f482e096844e127a0423cc6390ad3"
-CROS_WORKON_TREE=("52a8a8b6d3bbca5e90d4761aa308a5541d52b1bb" "34fa407c32f72e1e617af42b0b444d0d2cdd1a04" "8d228c8e702aebee142bcbf0763a15786eb5b3bb" "e7dba8c91c1f3257c34d4a7ffff0ea2537aeb6bb")
+CROS_WORKON_COMMIT="54c7fac37782fd4a975d5ac8982da4ef9423fda7"
+CROS_WORKON_TREE=("d897a7a44e07236268904e1df7f983871c1e1258" "fb558e32a302bb4fbf0eefa6593728b566d25ffa" "e08a2eb734e33827dffeecf57eca046cd1091373" "e7dba8c91c1f3257c34d4a7ffff0ea2537aeb6bb")
 CROS_WORKON_INCREMENTAL_BUILD="1"
 CROS_WORKON_PROJECT="chromiumos/platform2"
 CROS_WORKON_LOCALNAME="platform2"
@@ -34,6 +34,7 @@ RDEPEND="
 	net-fs/sshfs
 	sys-fs/dosfstools
 	sys-fs/exfat-utils
+	sys-fs/fuse-archive
 	sys-fs/fuse-exfat
 	sys-fs/fuse-zip
 	sys-fs/ntfs3g
@@ -52,6 +53,9 @@ pkg_preinst() {
 
 	enewuser "ntfs-3g"
 	enewgroup "ntfs-3g"
+
+	enewuser "fuse-archivemount"
+	enewgroup "fuse-archivemount"
 
 	enewuser "fuse-exfat"
 	enewgroup "fuse-exfat"
@@ -78,6 +82,7 @@ src_install() {
 
 	# Install seccomp policy files.
 	insinto /usr/share/policy
+	use seccomp && newins archivemount-seccomp-${ARCH}.policy archivemount-seccomp.policy
 	use seccomp && newins fuse-zip-seccomp-${ARCH}.policy fuse-zip-seccomp.policy
 	use seccomp && newins rar2fs-seccomp-${ARCH}.policy rar2fs-seccomp.policy
 
@@ -97,12 +102,17 @@ src_install() {
 	insinto /usr/share/cros/startup/process_management_policies
 	doins setuid_restrictions/cros_disks_whitelist.txt
 
+	# Install powerd prefs for FUSE freeze ordering.
+	insinto /usr/share/power_manager
+	doins powerd_prefs/suspend_freezer_deps_*
+
 	local fuzzers=(
 		filesystem_label_fuzzer
 	)
 
 	local fuzzer
 	for fuzzer in "${fuzzers[@]}"; do
+		# fuzzer_component_id is unknown/unlisted
 		platform_fuzzer_install "${S}"/OWNERS "${OUT}/${PN}_${fuzzer}"
 	done
 }
