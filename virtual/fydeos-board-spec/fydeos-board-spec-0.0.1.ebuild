@@ -16,7 +16,6 @@ RDEPEND="
     sys-apps/haveged
     virtual/fydemina
     chromeos-base/chromeos-bsp-pinebook-pro
-    chromeos-base/libwidevine
 "
 
 #    chromeos-base/intel-microcode
