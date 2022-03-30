@@ -7,6 +7,8 @@ rootA=3
 rootB=5
 boot_b_file="first-b.txt"
 EFI_NUM=12
+ARC_DIR=/mnt/stateful_partition/unencrypted/android
+CLEAN_OVERLAY="$ARC_DIR/.clean_overlay"
 
 get_part_priority() {
   local part_num=$1
@@ -95,6 +97,9 @@ main() {
  change_boot_to $part_num $tmpdir
  umount $tmpdir
  rmdir $tmpdir
+ if [ -d $ARC_DIR ]; then
+   touch $CLEAN_OVERLAY
+ fi
 }
 
 main $@
